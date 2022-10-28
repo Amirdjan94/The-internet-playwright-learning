@@ -75,6 +75,47 @@ test.describe ('all tests', () => {
         
         // Проверка URL страницы
         await expect(page).toHaveURL('/')
-        
+
     });
+    test ('Basic Auth', async ({page})=>{
+
+        //Переход на страницу и ожидание полной загрузки
+        await page.goto('/')
+        await page.waitForLoadState()
+
+        // Клик на ссылку "Basic Auth", авторизация и ожидание полной загрузки страницы
+        await page.locator('text=Basic Auth').click()
+        await page.waitForLoadState()
+
+        // Проверка перехода на страницу путем проверки просмотра контента
+        // I am manually  to encode the username and password and define the Authorization header in playwright.config.ts
+        await expect(page.locator('id=content')).toContainText('Congratulations')
+        
+        // Переход на предыдущую страницу и ожидание полной загрузки страницы
+        await page.goBack()
+        await page.waitForLoadState()
+        
+        // Проверка URL страницы
+        await expect(page).toHaveURL('/')
+    });
+    test ('Checkbox 2', async ({page})=>{
+        
+        // Переход на страницу и ожидание полной загрузки
+        await page.goto('/')
+        await page.waitForLoadState()
+
+        // Клик на ссылку "Checkboxes", авторизация и ожидание полной загрузки страницы 
+        await page.locator('text=Checkboxes').click()
+        await page.waitForLoadState()
+
+        // Проверка URL страницы и проверка заголовка
+        expect(page).toHaveURL('/checkboxes')
+        expect(page.locator('id=content')).toContainText('Checkboxes')
+
+        // expect(await page.getByLabel('checkbox 2').isChecked()).toBeTruthy()
+        expect(await page.getByRole('checkbox', {  checked: true, name: "checkbox 2" }).isChecked()).toBeTruthy()
+
+    })
+
+    
 });

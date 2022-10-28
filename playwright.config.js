@@ -1,6 +1,10 @@
 // @ts-check
 const { devices } = require('@playwright/test');
-
+const httpCredentials = {
+  username: 'admin',
+  password: 'admin',
+};
+const credentialsBase64 = btoa(`${httpCredentials.username}:${httpCredentials.password}`);
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -38,8 +42,11 @@ const config = {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     video: 'retain-on-failure',
-    trace: 'rretain-on-failure',
-    baseURL: 'https://the-internet.herokuapp.com'
+    trace: 'retain-on-failure',
+    baseURL: 'https://the-internet.herokuapp.com',
+    extraHTTPHeaders: {
+      'Authorization': `Basic ${credentialsBase64}`
+    },
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://localhost:3000',
 
