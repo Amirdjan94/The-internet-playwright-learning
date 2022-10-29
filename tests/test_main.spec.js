@@ -98,7 +98,7 @@ test.describe ('all tests', () => {
         // Проверка URL страницы
         await expect(page).toHaveURL('/')
     });
-    test ('Checkbox 2', async ({page})=>{
+    test ('Checkbox', async ({page})=>{
         
         // Переход на страницу и ожидание полной загрузки
         await page.goto('/')
@@ -112,9 +112,18 @@ test.describe ('all tests', () => {
         expect(page).toHaveURL('/checkboxes')
         expect(page.locator('id=content')).toContainText('Checkboxes')
 
-        // expect(await page.getByLabel('checkbox 2').isChecked()).toBeTruthy()
-        expect(await page.getByRole('checkbox', {  checked: true, name: "checkbox 2" }).isChecked()).toBeTruthy()
+        // Проверка состояний чекбоксов   
+        expect(await page.isChecked('input[type=checkbox]:nth-child(1)')).toBeFalsy()
+        expect(await page.isChecked('input[type=checkbox]:nth-child(3)')).toBeTruthy()
 
+        // Переключение чекбоксов на противоположные
+        await page.locator('input[type=checkbox]:nth-child(1)').check()
+        await page.locator('input[type=checkbox]:nth-child(3)').uncheck()
+
+        // Проверка состояний чекбоксов   
+        expect(await page.isChecked('input[type=checkbox]:nth-child(1)')).toBeTruthy()
+        expect(await page.isChecked('input[type=checkbox]:nth-child(3)')).toBeFalsy()
+        
     })
 
     

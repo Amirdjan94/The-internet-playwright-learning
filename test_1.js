@@ -69,23 +69,7 @@ const {expect} = require ("expect");
     // await page.locator('text=Basic Auth').click()
     // await page.waitForLoadState()
 
-    await page.goto('https://the-internet.herokuapp.com/broken_images')
-    await page.waitForLoadState()
-    // const element = await page.$$('.example>img')
-
-    const element = await page.waitForSelector('.example>img>>nth=2')
-    console.log('Loaded image: ' + await element.getAttribute('src'))
-
-    const response = await page.request.get(await element.getAttribute('src'));
-    await expect.poll(async () => {
-      const response = await page.request.get('https://api.example.com');
-      return response.status();
-    }, {
-      // Probe, wait 1s, probe, wait 2s, probe, wait 10s, probe, wait 10s, probe, .... Defaults to [100, 250, 500, 1000].
-      intervals: [1_000, 2_000, 10_000],
-      timeout: 60_000
-    }).toBe(200)
-    // console.log(element)
+    
     await page.waitForTimeout(2000)
     await browser.close()
 })()
