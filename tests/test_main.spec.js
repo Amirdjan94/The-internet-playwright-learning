@@ -145,11 +145,9 @@ test.describe ('all tests', () => {
         expect(page).toHaveURL('/download')
         expect(page.locator('id=content')).toContainText('File Downloader')
 
-        const locatorDownload = page.locator('href=download')
-        console.log(locatorDownload)
         const [ download ] = await Promise.all([
             page.waitForEvent('download'),
-            locatorDownload.click(),
+            page.getByText('teste.txt').click(),
           ]);
           const path = await download.path();
           console.log(path);
