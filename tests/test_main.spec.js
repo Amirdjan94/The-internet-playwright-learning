@@ -1,7 +1,7 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 
-test.describe ('all tests', () => {
+// test.describe ('all tests', () => {
     test ('Open site', async ({page})=>{
         // Переход на сайт The-internet
         await page.goto('/')
@@ -147,12 +147,37 @@ test.describe ('all tests', () => {
 
         const [ download ] = await Promise.all([
             page.waitForEvent('download'),
-            page.getByText('teste.txt').click(),
+            page.locator('teste.txt').click(),
           ]);
           const path = await download.path();
           console.log(path);
         page.waitForTimeout(3000)
 
+    });
+
+    test ('Drag and Drop', async ({page})=>{
+
+        // Переход на страницу и ожидание полной загрузки
+        await page.goto('/')
+        await page.waitForLoadState()
+ 
+        // Клик на ссылку "Drag and Drop, авторизация и ожидание полной загрузки страницы 
+        await page.locator('text="Drag and Drop"').click()
+        await page.waitForLoadState()
+
+        // Проверка URL страницы и проверка заголовка
+        expect(page).toHaveURL('drag_and_drop')
+        expect(page.locator('id=content')).toContainText('Drag and Drop')
+
+       // Проверка расположения элементов
+       expect(page.locator('.column:nth-child(1)')).toContainText('A')
+
+       // Перетаскивание элементов
+       await page.locator('.column:nth-child(1)').dragTo(page.locator('.column:nth-child(2)'))
+
+       // Проверка расположения элементов
+       expect(page.locator('.column:nth-child(1)')).toContainText('B')
+       await page.waitForTimeout(10000)
     })
     
-});
+// });
