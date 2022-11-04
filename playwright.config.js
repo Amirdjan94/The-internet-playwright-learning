@@ -4,7 +4,9 @@ const httpCredentials = {
   username: 'admin',
   password: 'admin',
 };
-const credentialsBase64 = btoa(`${httpCredentials.username}:${httpCredentials.password}`);
+
+const credentialsBase64 = Buffer.from(`${httpCredentials.username}:${httpCredentials.password}`, 'utf-8');
+const Auth = credentialsBase64.toString('base64');
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -45,7 +47,7 @@ const config = {
     trace: 'retain-on-failure',
     baseURL: 'https://the-internet.herokuapp.com',
     extraHTTPHeaders: {
-      'Authorization': `Basic ${credentialsBase64}`
+      'Authorization': `Basic ${Auth}`
     },
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://localhost:3000',

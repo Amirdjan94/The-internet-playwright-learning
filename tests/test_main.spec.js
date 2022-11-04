@@ -89,7 +89,7 @@ test.describe ('all tests', () => {
 
         // Проверка перехода на страницу путем проверки просмотра контента
         // I am manually  to encode the username and password and define the Authorization header in playwright.config.ts
-        await expect(page.locator('id=content')).toContainText('Congratulations')
+        await expect(page.locator('id=content')).toContainText('Congratulations', {timeout: 10000})
         
         // Переход на предыдущую страницу и ожидание полной загрузки страницы
         await page.goBack()
